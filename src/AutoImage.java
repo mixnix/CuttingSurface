@@ -11,28 +11,40 @@ public class AutoImage {
 
     private BufferedImage source;
     private BufferedImage currentImage;
+    public int desired_width = 600;
+    public int desired_height = 300;
 
-    public AutoImage(String fileName) throws IOException{
+    public AutoImage(String fileName, int width) throws IOException{
         source = loadImageFromFile(fileName);
+        desired_width = width;
+        desired_height = getNewHeight();
+        currentImage = resizeImage(BufferedImage.TYPE_INT_ARGB);
+
     }
 
-    private int getNewHeight(int w, int h){
-        double ratio = DESIRED_WIDTH / (double) w;
-        int newHeight = (int) (h * ratio);
-        return newHeight;
-    }
-
-    private BufferedImage resizeImage(BufferedImage originalImage, int width, int height, int type) throws IOException {
-        BufferedImage resizedImage = new BufferedImage(width, height, type);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0,0,width, height,null);
-        g.dispose();
-
-        return resizedImage;
+    public BufferedImage getTransformed(){
+        return currentImage;
     }
 
     private BufferedImage loadImageFromFile(String fileName) throws IOException{
         BufferedImage bimg = ImageIO.read(new File(fileName));
         return bimg;
     }
+
+    private int getNewHeight(){
+        double ratio = this.desired_width / (double) source.getWidth();
+        int newHeight = (int) (source.getHeight() * ratio);
+        return newHeight;
+    }
+
+    private BufferedImage resizeImage(int type) throws IOException {
+        BufferedImage resizedImage = new BufferedImage(desired_width, desired_height, type);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(source, 0,0,desired_width, desired_height,null);
+        g.dispose();
+
+        return resizedImage;
+    }
+
+
 }

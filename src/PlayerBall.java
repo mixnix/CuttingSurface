@@ -1,7 +1,5 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.security.Key;
 
 /**
@@ -18,7 +16,7 @@ public class PlayerBall extends Sprite {
     }
 
     private void initBall(){
-        loadImage("Ball.png");
+        loadImage("Ball.png",40);
         getImageDimension();
     }
 

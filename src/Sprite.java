@@ -16,7 +16,6 @@ public class Sprite {
     protected int width;
     protected int height;
     protected boolean vis;
-    protected BufferedImage source;
     protected BufferedImage image;
     private final int DESIRED_WIDTH = 40;
 
@@ -26,14 +25,12 @@ public class Sprite {
         vis = true;
     }
 
-    protected void loadImage(String imageName){
-        //revise load image
+    protected void loadImage(String imageName, int preferredWidth){
         try{
-            source = loadImageFromFile();
-            int h = getNewHeight(source.getWidth(), source.getHeight());
-            image = resizeImage(source, DESIRED_WIDTH, h, BufferedImage.TYPE_INT_ARGB);
+            AutoImage temp = new AutoImage("ball.png", preferredWidth);
+            image = temp.getTransformed();
         }catch (IOException ex){
-            Logger.getLogger(Sprite.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AutoImage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -65,25 +62,4 @@ public class Sprite {
     public Rectangle getBounds(){
         return new Rectangle(x, y, width, height);
     }
-
-    private int getNewHeight(int w, int h){
-        double ratio = DESIRED_WIDTH / (double) w;
-        int newHeight = (int) (h * ratio);
-        return newHeight;
-    }
-
-    private BufferedImage resizeImage(BufferedImage originalImage, int width, int height, int type) throws IOException{
-        BufferedImage resizedImage = new BufferedImage(width, height, type);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0,0,width, height,null);
-        g.dispose();
-
-        return resizedImage;
-    }
-
-    private BufferedImage loadImageFromFile() throws IOException{
-        BufferedImage bimg = ImageIO.read(new File("ball.png"));
-        return bimg;
-    }
-
 }
