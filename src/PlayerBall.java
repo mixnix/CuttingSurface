@@ -1,6 +1,6 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.security.Key;
+import java.awt.image.BufferedImage;
 
 /**
  * Created by user_name on 21.02.2017.
@@ -12,12 +12,21 @@ public class PlayerBall extends Sprite {
     public PlayerBall(int x, int y){
         super(x, y);
 
+        initPlayerBall();
+    }
+
+    private void initPlayerBall(){
         initBall();
+        //loadImage("Ball.png",40);
+        getImageDimension();
     }
 
     private void initBall(){
-        loadImage("Ball.png",40);
-        getImageDimension();
+        BufferedImage bimg = new BufferedImage(25,25,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = bimg.createGraphics();
+        g2.fillArc(0, 0, 25, 25, 0, 360);
+        g2.dispose();
+        image = bimg;
     }
 
     public void move(){
